@@ -1,12 +1,16 @@
-// proxy-server/server.js
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Allow requests from your Elastic Beanstalk domain
+app.use(
+  cors({
+    origin: 'http://team5-codepipeline-demoapp-env.eba-apbnns5a.eu-north-1.elasticbeanstalk.com',
+  })
+);
 
 // Route for fetching horoscope data
 app.get('/api/horoscope/:sign', async (req, res) => {
@@ -20,6 +24,9 @@ app.get('/api/horoscope/:sign', async (req, res) => {
   }
 });
 
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Proxy server is running on http://localhost:${PORT}`);
+  console.log(
+    `Proxy server is running on http://team5-codepipeline-demoapp-env.eba-apbnns5a.eu-north-1.elasticbeanstalk.com:${PORT}`
+  );
 });
